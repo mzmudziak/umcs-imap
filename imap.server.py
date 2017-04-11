@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 from socket import socket, AF_INET, SOCK_STREAM
 
-S = "TO"
-
 
 def receive_all_until(sock_fd, crlf):
     data = ""
