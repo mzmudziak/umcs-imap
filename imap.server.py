@@ -2,9 +2,9 @@
 from socket import socket, AF_INET, SOCK_STREAM
 
 
-def receive_all_until(sock_fd, crlf):
+def receive_all_until(sock_fd, msg_end):
     data = ""
-    while not data.endswith(crlf):
+    while not data.endswith(msg_end):
         data = data + sock_fd.recv(1)
     print data
 
