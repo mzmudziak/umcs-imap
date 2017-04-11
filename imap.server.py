@@ -1,13 +1,13 @@
 #!/usr/bin/env python
-import socket as s
+from socket import socket, AF_INET, SOCK_STREAM
 
 S = "TO"
 
 
-def recv_all_until(sockfd, crlf):
+def receive_all_until(sock_fd, crlf):
     data = ""
     while not data.endswith(crlf):
-        data = data + sockfd.recv(1)
+        data = data + sock_fd.recv(1)
     print data
 
 
@@ -18,32 +18,32 @@ PASSWORD = "P4SInf2017"
 CRLF = "\r\n"
 
 SERVER_ADDRESS = (ADDRESS, PORT)
-sock = s.socket(s.AF_INET, s.SOCK_STREAM)
+sock = socket(AF_INET, SOCK_STREAM)
 
 sock.connect(SERVER_ADDRESS)
-recv_all_until(sock, CRLF)
+receive_all_until(sock, CRLF)
 
 MSG_LOGIN_TAG = "T0"
 MSG_LOGIN = MSG_LOGIN_TAG + " LOGIN " + EMAIL + " " + PASSWORD + CRLF
 sock.sendall(MSG_LOGIN)
-recv_all_until(sock, MSG_LOGIN_TAG)
+receive_all_until(sock, MSG_LOGIN_TAG)
 
 MSG_SELECT_TAG = "T1"
 MSG_SELECT = MSG_SELECT_TAG + " SELECT Inbox" + CRLF
 sock.sendall(MSG_SELECT)
-recv_all_until(sock, MSG_SELECT_TAG)
+receive_all_until(sock, MSG_SELECT_TAG)
 
 MSG_FETCH_TAG = "T2"
 MSG_FETCH = MSG_FETCH_TAG + " FETCH 1 BODY[]" + CRLF
 sock.sendall(MSG_FETCH)
-recv_all_until(sock, MSG_FETCH_TAG)
+receive_all_until(sock, MSG_FETCH_TAG)
 
 MSG_CLOSE_TAG = "T3"
 MSG_CLOSE = MSG_CLOSE_TAG + " CLOSE" + CRLF
 sock.sendall(MSG_CLOSE)
-recv_all_until(sock, MSG_CLOSE_TAG)
+receive_all_until(sock, MSG_CLOSE_TAG)
 
 MSG_LOGOUT_TAG = "T4"
 MSG_LOGOUT = MSG_LOGOUT_TAG + " LOGOUT" + CRLF
 sock.sendall(MSG_LOGOUT)
-recv_all_until(sock, MSG_LOGOUT_TAG)
+receive_all_until(sock, MSG_LOGOUT_TAG)
